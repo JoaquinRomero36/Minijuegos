@@ -1,0 +1,49 @@
+  body {
+    margin: 0;
+    padding: 0;
+  }
+  
+  @media screen and (min-width: 2000px) {
+    .swal2-container {
+    inset: 0 !important;         /* asegura que use todo el viewport */
+    margin: 0 auto !important;   /* centra horizontalmente */
+    display: flex !important;    
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
+ .swal2-image {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  width: 100% !important;
+}
+
+/* Ajustamos la imagen en sí */
+.swal2-image img,
+.swal2-popup img {
+  max-width: 100% !important;
+  height: auto !important;
+  display: block !important;
+  margin: 0 auto !important;
+}
+
+  .swal2-popup {
+    max-width: 1600px !important;
+    width: 90% !important;
+    font-size: 48px !important;
+    border-radius: 30px !important;
+    padding: 80px !important;
+  }
+
+  .swal2-title {
+    font-size: 64px !important;
+    margin-bottom: 40px !important;
+  }
+
+  .swal2-confirm {
+    font-size: 48px !important;
+    padding: 30px 80px !important;
+    border-radius: 20px !important;
+  }
+  }

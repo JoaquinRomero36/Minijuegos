@@ -1,0 +1,29 @@
+<div class="ruleta-container">
+  <!-- Fondo animado -->
+  <div class="background"></div>
+  <audio src="aud/music.mp3" autoplay loop></audio>
+  <!-- Contenido principal de la ruleta y botón -->
+  <div class="ruleta-content">
+    <!-- Botón arriba a la izquierda -->
+   <!--  @if(togler){
+    <button class="button-default toggle-btn" (click)="toglear()">
+      Ocultar ingreso de Email
+    </button>
+  } 
+  @else {
+    <button class="button-default toggle-btn" (click)="toglear()">
+      Mostrar ingreso de Email
+    </button>
+  }-->
+    <h2 class="title-text">Gira la ruleta para jugar!</h2>
+    <div id="roulette-container" class="roulette-box"></div>
+
+    @if(togler){
+      <input type="email" class="input-email" placeholder="email@gmail.com" [formNoValidate]="true">
+    }
+    
+    <button class="button-default" (click)="spin()">
+      Girar Ruleta
+    </button>
+  </div>
+</div>

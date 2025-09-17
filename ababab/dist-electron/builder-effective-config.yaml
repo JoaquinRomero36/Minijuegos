@@ -1,0 +1,18 @@
+directories:
+  output: dist-electron
+  buildResources: build
+appId: com.chubut.memotest
+productName: MemoTest
+files:
+  - filter:
+      - dist/**/*
+      - main.js
+      - package.json
+win:
+  target:
+    - nsis
+  forceCodeSigning: false
+  icon: icono.ico
+mac: null
+linux: null
+electronVersion: 38.0.0

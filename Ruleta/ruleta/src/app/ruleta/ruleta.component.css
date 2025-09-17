@@ -1,0 +1,121 @@
+#roulette-container {
+  width: 80vw; /* 80% del ancho de la ventana */
+  height: 80vw; /* Mantiene la proporción cuadrada */
+  max-width: 500px; /* Tamaño máximo */
+  max-height: 500px; /* Tamaño máximo */
+  border-radius: 50%;
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.4);
+  background: radial-gradient(circle, #ff970e 100%);
+}
+
+/* Fondo animado */
+.background {
+  position: fixed; 
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to right, rgb(255, 212, 212) 0%, rgb(250, 219, 190) 50%, rgb(252, 252, 181) 100%);
+  z-index: 0;
+}
+
+
+.title-text {
+   font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  font-size: 2rem;
+  font-weight: bold;
+  text-align: center;
+  background: linear-gradient(90deg, #ffffff, #ffffff, #ffffff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: black;
+  animation: shimmer 3s infinite linear;
+  text-shadow: 0 0 8px rgba(0, 0, 0, 0.671);
+  margin-bottom: 1rem;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+/* Capa del contenido encima del fondo */
+.ruleta-content {
+  position: relative;
+  z-index: 1;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;       /* centra horizontalmente */
+  justify-content: center;   /* centra verticalmente */
+  gap: 20px;    
+  margin-top: 300px;             /* espacio entre la ruleta y btn */
+}
+
+
+
+/* Botón toggle arriba a la izquierda */
+.toggle-btn {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+}
+
+
+.button-default {
+  background-color: #ff7b00;
+  padding: 0.8em 1.5em;      
+  border: 2px solid #be4c00;
+  border-radius: 16px;       
+  text-align: center;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.input-email {
+  background-color: #34495e;        /* mismo color que el botón */
+  color: white;                     /* texto blanco */
+  border: 2px solid #23313f;        /* mismo borde que el botón */
+  border-radius: 16px;              /* bordes redondeados iguales */
+  padding: 0.8em 1em;               /* espacio interno */
+  font-size: 1em;
+  font-weight: bold;
+  outline: none;                    /* quitamos el borde por defecto */
+  transition: transform 0.2s, box-shadow 0.2s; /* efecto suave */
+  width: 30%;                      /* ocupa todo el contenedor */
+  box-sizing: border-box;           /* padding incluido en width */
+}
+
+/* Pantallas grandes tipo TV (ej: +2000px de ancho) */
+@media screen and (min-width: 2000px) {
+  #roulette-container {
+    width: 90vw;   /* más chico proporcionalmente */
+    height: 40vw;
+    max-width: 3000px;  /* permitimos crecer más */
+    max-height: 3000px;
+  }
+
+  .title-text {
+    margin-top: 200px;
+    margin-bottom: 200px;
+    font-size: 9rem; /* texto más grande */
+  }
+
+  .button-default, .input-email {
+  font-size: 8.5rem; 
+  padding: 0.5em 1.5em;
+  margin-top: 5rem;
+  border-radius: 2rem; /* más suave y moderno */
+  border: none;
+  background: linear-gradient(135deg, #ff6600, #fc7223);
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 0.8rem 1.5rem rgba(0, 0, 0, 0.3);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+}

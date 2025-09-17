@@ -1,0 +1,42 @@
+{
+  "name": "memotest",
+  "version": "1.0.4",
+  "description": "Aplicación MemoTest con Angular + Electron",
+  "main": "main.js",
+  "author": "Tu Nombre",
+  "license": "MIT",
+  "scripts": {
+    "ng": "ng",
+    "start": "ng serve",
+    "electron": "electron .",
+    "build-angular": "cd memotest && npm ci && npx ng build --configuration production --base-href ./ --output-path ../dist/browser",
+    "start-electron": "npx electron .",
+    "dist": "npm run build-angular && electron-builder --win"
+  },
+  "dependencies": {
+    "sweetalert2": "^11.23.0"
+  },
+  "devDependencies": {
+    "electron": "^38.0.0",
+    "electron-builder": "^26.0.12"
+  },
+  "build": {
+    "appId": "com.chubut.memotest",
+    "productName": "MemoTest",
+    "directories": {
+      "output": "dist-electron"
+    },
+    "files": [
+      "dist/**/*",
+      "main.js",
+      "package.json"
+    ],
+   "win": {
+    "target": ["nsis"],
+    "forceCodeSigning": false,
+    "icon": "icono.ico"
+    },
+    "mac": null,
+    "linux": null
+  }
+}

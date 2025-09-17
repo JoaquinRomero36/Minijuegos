@@ -1,0 +1,43 @@
+{
+  "name": "trivia",
+  "version": "1.0.9",
+  "description": "Aplicación Trivia con Angular + Electron",
+  "main": "main.js",
+  "author": "Tu Nombre",
+  "license": "MIT",
+  "scripts": {
+  "start": "ng serve",
+  "electron": "electron .",
+  "build-angular": "cd trivia && npx ng build --configuration production --base-href ./ --output-path ../dist/browser",
+  "start-electron": "npx electron .",
+  "dist": "cd trivia && npx ng build --configuration production --base-href ./ --output-path ../dist/browser && cd .. && electron-builder --win --publish never"
+},
+  "dependencies": {
+    "sweetalert2": "^11.23.0"
+  },
+  "devDependencies": {
+    "electron": "^38.0.0",
+    "electron-builder": "^26.0.12"
+  },
+  "build": {
+    "appId": "com.chubut.trivia",
+    "productName": "Trivia",
+    "directories": {
+      "output": "dist-electron"
+    },
+    "files": [
+    "dist/browser/**/*",
+    "main.js",
+    "package.json"
+    ],
+    "win": {
+      "target": [
+        "nsis"
+      ],
+      "forceCodeSigning": false,
+      "icon": "icono.ico"
+    },
+    "mac": null,
+    "linux": null
+  }
+}

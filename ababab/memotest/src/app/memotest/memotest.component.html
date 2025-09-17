@@ -1,0 +1,46 @@
+<div class="background">  
+  <audio src="./aud/music.mp3" autoplay loop></audio>
+  @if(juegoFlag){
+  <div class="game-wrapper">
+    <div class="hud">
+      <div class="hud-item">
+        Tiempo: <span [class.low]="timeLeft <= 10">{{ timeLeft }}s</span>
+      </div>
+      <div class="hud-item">
+        Movimientos: <b>{{ moves }}</b>
+      </div>
+      <div class="hud-item">
+        Pares: <b>{{ matchesFound }}</b> / {{ totalPairs }}
+      </div>
+    </div>
+
+    <div class="board" [class.locked]="busy">
+      <div
+        class="card"
+        *ngFor="let card of deck; index as i"
+        (click)="flipCard(i)"
+        [class.matched]="card.matched"
+      >
+        <div class="card-inner" [class.flipped]="card.flipped || card.matched">
+          <!-- reverso -->
+          <div class="card-face card-back">
+            <div class="pattern"></div>
+          </div>
+          <!-- frente -->
+          <div class="card-face card-front">
+            <img [src]="card.image" alt="img" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+}
+@if(!juegoFlag) {
+  <h1 class="header-game">Memotest</h1>
+  <h3 class="header-game">Encontrá los ocho pares de cartas antes de que se termine el tiempo</h3>
+  <button class="button-default" (click)="jugar()">JUGAR</button>
+}
+<div class="footer">
+  <img src='./cards/logo.jpg' alt="Logo de la empresa">
+</div>
+</div>

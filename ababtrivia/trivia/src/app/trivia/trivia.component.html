@@ -1,0 +1,81 @@
+<div class="background">
+  <audio src='./aud/music.mp3' autoplay loop></audio>
+  <div class="trivia-container">
+    @if(chekFlag){
+      @if(adult) {
+        <div class="title-container">
+        <h1>Compromiso responsable</h1>
+        </div>
+  <div class="contract-container">
+    <label class="contract-item" *ngFor="let item of adultChecks; let i = index">
+      <input type="checkbox" [(ngModel)]="adultChecks[i].checked">
+      <p>{{ item.text }}</p>
+    </label>
+
+    <button class="age-btn" (click)="checkSwitch(adultChecks)">
+      {{ allChecked(adultChecks) ? 'Acepto el compromiso' : 'Acepto el compromiso' }}
+    </button>
+  </div>
+}
+@else {
+  <div class="title-container">
+        <h1>Compromiso responsable</h1>
+      </div>
+  <div class="contract-containerr">
+    <label class="contract-item" *ngFor="let item of minorChecks; let i = index">
+      <input type="checkbox" [(ngModel)]="minorChecks[i].checked">
+      <p>{{ item.text }}</p>
+    </label>
+
+    <button class="age-btn" (click)="checkSwitch(minorChecks)">
+      {{ allChecked(minorChecks) ? 'Acepto el compromiso' : 'Acepto el compromiso' }}
+    </button>
+  </div>
+}
+    }
+    @else {
+@if(triviaFlag){
+     <!-- Timer visual -->
+    <div class="timer">
+      <span>Tiempo restante: {{ timeLeft }}s</span>
+    </div>
+
+    @if(preguntas.length > 0){
+      @for(pre of preguntas; track $index){
+        @if(tracker == $index){
+          <div class="card">
+            <h2 class="question">{{ pre.qestion }}</h2>
+            <div class="answers">
+              @for(ans of pre.answers; track $index){
+                <button 
+                  class="answer-btn"
+                  [ngClass]="{
+                    'correct': selectedAnswer === ans && ans.correct,
+                    'incorrect': selectedAnswer === ans && !ans.correct
+                  }"
+                  (click)="selectAnswer(ans)">
+                  {{ ans.text }}
+                </button>
+              }
+            </div>
+          </div>
+        }
+      }
+    }      
+    }
+    @else {
+      <div class="age-container">
+        <h1>Juego responsable</h1>
+
+        <div class="buttons">
+          <button class="age-btn" (click)="adultSwitch(true)">Mayor de 18 años</button>
+          <button class="age-btn" (click)="adultSwitch(false)">Menor de 18 años</button>
+        </div>
+      </div>
+    }
+    }
+  </div>  
+  <div class="footer">
+  <img src='./cards/logo2.PNG' alt="Logo de la empresa">
+</div>    
+</div>
