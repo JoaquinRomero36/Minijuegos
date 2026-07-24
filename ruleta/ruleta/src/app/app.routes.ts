@@ -3,6 +3,6 @@ import { RuletaComponent } from './ruleta/ruleta.component';
 import { AppComponent } from './app.component';
 
 export const routes: Routes = [
-    {path: "", redirectTo: "landing", pathMatch: 'full'},
+    {path: "", redirectTo: "ruleta", pathMatch: 'full'},
     { path : "ruleta", component: RuletaComponent},
 ];
