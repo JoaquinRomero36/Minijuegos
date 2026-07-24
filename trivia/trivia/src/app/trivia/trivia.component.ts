@@ -1,9 +1,8 @@
-import { Component, inject, NgModule, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { pregunta } from './interfaces';
 import Swal from "sweetalert2"
 import { PREGUNTAS } from './preguntas';
 import { CommonModule, NgClass } from '@angular/common';
-import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 
 @Component({
@@ -15,235 +14,221 @@ import { FormsModule } from '@angular/forms';
 })
 export class TriviaComponent implements OnInit, OnDestroy {
 
-private readonly router = inject(Router);
-
   correct = new Audio('aud/correctCard.mp3');
   incorrect = new Audio('aud/nomatch.mp3');
   winSound = new Audio('aud/win2.mp3');
   looseSound = new Audio('aud/lose2.mp3');
 
-  adult: boolean = true;
-
-  chekFlag: boolean = false;
-  triviaFlag: boolean = false; 
+  triviaFlag: boolean = false;
   tracker: number = 0;
-  respuestasCorrectas : number = 0
+  respuestasCorrectas: number = 0
 
-  // Timer visual (30s)
   timeLeft: number = 3;
   interval: any;
 
   selectedAnswer: any = null;
 
-    ngOnDestroy(): void {
+  countdownVisible = false;
+  countdownText = '';
+  countdownAnimClass = '';
+
+  private audioCtx: AudioContext | null = null;
+  private melodyInterval: any = null;
+  private melodyIdx = 0;
+
+  private getCtx(): AudioContext {
+    if (!this.audioCtx) this.audioCtx = new AudioContext();
+    if (this.audioCtx.state === 'suspended') this.audioCtx.resume();
+    return this.audioCtx;
+  }
+
+  private playBeep(freq: number, dur = 0.25) {
+    const ctx = this.getCtx();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.frequency.value = freq;
+    osc.type = 'sine';
+    gain.gain.setValueAtTime(0.15, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + dur);
+    osc.start();
+    osc.stop(ctx.currentTime + dur);
+  }
+
+  private melodyNotes = [262, 294, 330, 392, 523, 392, 330, 294];
+
+  private startMelody() {
+    this.melodyIdx = 0;
+    const ctx = this.getCtx();
+    const playNote = () => {
+      if (this.melodyIdx >= this.melodyNotes.length) this.melodyIdx = 0;
+      const freq = this.melodyNotes[this.melodyIdx];
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.frequency.value = freq;
+      osc.type = 'sine';
+      const t = ctx.currentTime + 0.03;
+      gain.gain.setValueAtTime(0, t);
+      gain.gain.linearRampToValueAtTime(0.06, t + 0.06);
+      gain.gain.linearRampToValueAtTime(0.06, t + 0.2);
+      gain.gain.exponentialRampToValueAtTime(0.001, t + 0.4);
+      osc.start(t);
+      osc.stop(t + 0.42);
+      this.melodyIdx++;
+    };
+    playNote();
+    this.melodyInterval = setInterval(playNote, 350);
+  }
+
+  private stopMelody() {
+    clearInterval(this.melodyInterval);
+    this.melodyInterval = null;
+  }
+
+  ngOnDestroy(): void {
     clearInterval(this.interval);
+    this.stopMelody();
+    if (this.audioCtx) this.audioCtx.close();
   }
 
   selectAnswer(ans: any) {
     this.selectedAnswer = ans;
-    if(ans.correct){
-            this.correct.play()
+    if (ans.correct) {
+      this.correct.play()
+    } else {
+      this.incorrect.play()
     }
-    else{
-            this.incorrect.play()
-    }
-    // mostramos el color por 1s antes de verificar
     setTimeout(() => {
       this.verificar(ans.correct);
-      this.selectedAnswer = null; // reseteo color
+      this.selectedAnswer = null;
     }, 1000);
   }
 
-ngOnInit(): void {
-this.CreateMAtch()
-}
+  ngOnInit(): void {
+    this.CreateMAtch()
+  }
 
-CreateMAtch(){
-  this.tracker = 0;
-  this.respuestasCorrectas = 0;
-  this.preguntas = PREGUNTAS
-    .filter(p => p.adult === this.adult)
-    .sort(() => Math.random() - 0.5) // shuffle
-    .slice(0, 3);
-}
+  CreateMAtch() {
+    this.tracker = 0;
+    this.respuestasCorrectas = 0;
+    this.preguntas = PREGUNTAS
+      .sort(() => Math.random() - 0.5)
+      .slice(0, 5);
+  }
 
-startTimer() {
-  // Reiniciamos cualquier timer previo
-  clearInterval(this.interval);
-  this.timeLeft = 15;
+  startTimer() {
+    clearInterval(this.interval);
+    this.timeLeft = 15;
+    this.stopMelody();
+    this.startMelody();
 
-  this.interval = setInterval(() => {
-    if (this.timeLeft > 0) {
-      this.timeLeft--;
+    this.interval = setInterval(() => {
+      if (this.timeLeft > 0) {
+        this.timeLeft--;
+      } else {
+        clearInterval(this.interval);
+        this.incorrect.play();
+        this.verificar(false);
+      }
+    }, 1000);
+  }
+
+  preguntas: pregunta[] = []
+
+  verificar(coorecto: boolean) {
+    clearInterval(this.interval);
+    this.stopMelody();
+
+    if (coorecto) {
+      this.respuestasCorrectas++;
+      this.correct.play();
     } else {
-      // tiempo terminado, marcamos como incorrecta
-      clearInterval(this.interval);
       this.incorrect.play();
-      this.verificar(false);
     }
-  }, 1000);
-}
 
+    if (this.tracker >= this.preguntas.length - 1) {
+      setTimeout(() => this.finJuego(), 1500);
+    } else {
+      this.tracker++;
+      this.startTimer();
+    }
 
-preguntas : pregunta[] = []
-
- 
-verificar(coorecto: boolean) {
-  // Paramos el timer de la pregunta actual
-  clearInterval(this.interval);
-
-  if (coorecto) {
-    this.respuestasCorrectas++;
-    this.correct.play();
-  } else {
-    this.incorrect.play();
+    console.log(this.respuestasCorrectas);
   }
 
-  // Pasamos a la siguiente pregunta o terminamos
-  if (this.tracker >= this.preguntas.length - 1) {
-    this.finJuego();
-  } else {
-    this.tracker++;
-    // Reiniciamos el timer para la siguiente pregunta
-    this.startTimer();
-  }
-
-  console.log(this.respuestasCorrectas);
-}
-
-finJuego(){
-  if(this.respuestasCorrectas > 1){
-    this.winSound.play()
-
-      Swal.fire({ title: '¡Ganaste!', 
-                  icon: 'success',  
-                  showConfirmButton: false,  
-                  timer: 4000,              
-                  timerProgressBar: true,
-               //   width: '1600px',
-                  padding: '80px',
-                      customClass: {
-                        popup: 'swal2-popup',
-                        title: 'swal2-title',
-                        confirmButton: 'swal2-confirm'
-                      }
-          }).then(() => {
-            this.timeLeft = 15
-        this.chekFlag = true;
-  })
-    }
-    else{
-      this.looseSound.play()
-      Swal.fire({ titleText: 'Perdiste!', 
-                  icon: 'error', 
-                  showConfirmButton: false,  
-                  timer: 4000,              
-                  timerProgressBar: true,
-            //      width: '1600px',
-                  padding: '80px',
-                  customClass: {
-                    popup: 'swal2-popup',
-                    title: 'swal2-title',
-                    confirmButton: 'swal2-confirm'
-                  }
-                }).then(() => {
-                  this.timeLeft = 15
-                  this.chekFlag = true;
-  })
-    }
-  }
-  adultSwitch(adult: boolean){
-    if(!adult){
-      this.adult = false
-        Swal.fire({  titleText: 'Recordá que las apuestas en juegos de azar son solo para mayores de 18 años',   
-               showConfirmButton: true, 
-               confirmButtonText: "COMENZAR", 
-       //        width: '1600px',
-               color: '#3ca935',
-               padding: '80px',
-                  customClass: {
-                    popup: 'swal2-popup',
-                    title: 'swal2-title',
-                    confirmButton: 'swal2-confirm'
-                  }
-      }).then(() => {
-        this.startTimer();
-    this.triviaFlag = !this.triviaFlag;
-  })
-    }
-    else{
-      this.adult = true
-        Swal.fire({  title: '¿Cuánto conocés de los juegos de azar?',   
-               showConfirmButton: true, 
-               confirmButtonText: "COMENZAR", 
-               color: '#3ca935',
-        //       width: '1600px',
-               padding: '80px',
-                  customClass: {
-                    popup: 'swal2-popup',
-                    title: 'swal2-title',
-                    confirmButton: 'swal2-confirm'
-                  }
-      }).then(() => {
-        this.startTimer();
-    this.triviaFlag = !this.triviaFlag;
-  })
-    }
-  }
-  checkSwitch(list: {checked: boolean}[]) {
-    
-    if(this.allChecked(list)){
+  finJuego() {
+    if (this.respuestasCorrectas > 2) {
       this.winSound.play()
-       Swal.fire({ titleText: 'Ganaste un premio sorpresa!', 
-                  showConfirmButton: false,  
-                  timer: 4000,              
-                  timerProgressBar: true,
-            //      width: '1600px',
-                  padding: '80px',
-                  customClass: {
-                    popup: 'swal2-popup',
-                    title: 'swal2-title',
-                    confirmButton: 'swal2-confirm'
-                  }
-                }).then(() => {
-                  this.chekFlag = false;
-    this.triviaFlag = false;
-    list.forEach(item => item.checked = false);
-    this.CreateMAtch()
-  })
-    } else{
-    this.chekFlag = false;
-    this.triviaFlag = false;
-    list.forEach(item => item.checked = false);
-    this.CreateMAtch()
+
+      Swal.fire({
+        title: '¡Ganaste!',
+        text: `Acertaste ${this.respuestasCorrectas} de ${this.preguntas.length} preguntas`,
+        icon: 'success',
+        showConfirmButton: false,
+        timer: 4000,
+        timerProgressBar: true,
+        padding: '80px',
+        customClass: {
+          popup: 'swal2-popup',
+          title: 'swal2-title',
+          confirmButton: 'swal2-confirm'
+        }
+      }).then(() => {
+        this.timeLeft = 15;
+        this.triviaFlag = false;
+        this.CreateMAtch();
+      })
+    }
+    else {
+      this.looseSound.play()
+      Swal.fire({
+        titleText: '¡Perdiste!',
+        text: `Acertaste ${this.respuestasCorrectas} de ${this.preguntas.length} preguntas`,
+        icon: 'error',
+        showConfirmButton: false,
+        timer: 4000,
+        timerProgressBar: true,
+        padding: '80px',
+        customClass: {
+          popup: 'swal2-popup',
+          title: 'swal2-title',
+          confirmButton: 'swal2-confirm'
+        }
+      }).then(() => {
+        this.timeLeft = 15;
+        this.triviaFlag = false;
+        this.CreateMAtch();
+      })
+    }
   }
+
+  empezar() {
+    this.countdownVisible = true;
+    this.runCountdown();
   }
- 
 
-  //cheks
-    adultChecks = [
-    { text: 'Jugaré por diversión', checked: false },
-    { text: 'Mantendré un equilibrio', checked: false },
-    { text: 'Estableceré un límite de tiempo', checked: false },
-    { text: 'No intentaré recuperar pérdidas', checked: false },
-    { text: 'Haré pausas', checked: false },
-    { text: 'Disfrutaré de otras actividades', checked: false },
-    { text: 'Definiré un presupuesto antes de jugar', checked: false },
-  ];
-
-  minorChecks = [
-    { text: 'Las apuestas en juegos de azar son solo para mayores de 18 años', checked: false },
-    { text: 'Jugaré por diversión', checked: false },
-    { text: 'Respetaré mis tiempos de estudio, descanso y deportes', checked: false },
-    { text: 'Haré pausas cuando juegue videojuegos', checked: false },
-    { text: 'No me dejaré llevar por la frustración de perder', checked: false },
-    { text: 'Disfrutaré también de actividades fuera de la pantalla', checked: false },
-    { text: 'Cuidaré a mis amigos y los alentaré a jugar con equilibrio', checked: false },
-  ];
-
-  checkboxes = [false, false, false, false, false, false, false]; // uno por cada checkbox
-
-  allChecked(list: {checked: boolean}[]): boolean {
-    return list.every(item => item.checked);
+  runCountdown() {
+    const steps = ['3', '2', '1', 'EMPIEZA'];
+    let i = 0;
+    const showNext = () => {
+      if (i < steps.length) {
+        this.countdownText = steps[i];
+        this.countdownAnimClass = '';
+        this.playBeep(steps[i] === 'EMPIEZA' ? 880 : 440);
+        setTimeout(() => {
+          this.countdownAnimClass = steps[i] === 'EMPIEZA' ? 'pop empieza' : 'pop';
+        }, 20);
+        i++;
+        setTimeout(showNext, 900);
+      } else {
+        this.countdownVisible = false;
+        this.startTimer();
+        this.triviaFlag = true;
+      }
+    };
+    showNext();
   }
 }

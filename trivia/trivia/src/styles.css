@@ -1,6 +1,12 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
+
 body {
   margin: 0;
   padding: 0;
+}
+
+.swal2-popup, .swal2-title, .swal2-confirm, .swal2-content {
+  font-family: "Inter", sans-serif !important;
 }
 
 @media (min-height: 2000px) {
@@ -12,7 +18,6 @@ body {
 }
 
 .swal2-title {
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   font-size: 110px !important;
   margin-bottom: 40px !important;
 }

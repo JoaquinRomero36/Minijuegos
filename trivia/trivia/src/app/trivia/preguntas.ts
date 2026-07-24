@@ -1,125 +1,164 @@
 import { pregunta } from "./interfaces";
 
 export const PREGUNTAS: pregunta[] = [
-  // +18
   {
-    qestion: "¿En Argentina, a partir de qué edad está permitido participar en apuestas de dinero en juegos de azar?",
-    adult: true,
+    qestion: "¿En qué fechas se realizarán los XIII Juegos Suramericanos Santa Fe 2026?",
     answers: [
-      { text: "16 años", correct: false },
-      { text: "18 años", correct: true },
-      { text: "21 años", correct: false }
+      { text: "1 al 15 de octubre de 2026", correct: false },
+      { text: "12 al 26 de septiembre de 2026", correct: true },
+      { text: "10 al 24 de agosto de 2026", correct: false }
     ]
   },
   {
-    qestion: "¿Qué significa jugar de manera responsable?",
-    adult: true,
+    qestion: "¿Qué tres ciudades son sedes de los Juegos Suramericanos 2026?",
     answers: [
-      { text: "Apostar todo lo que uno tiene", correct: false },
-      { text: "Jugar por entretenimiento, con límites claros", correct: true },
-      { text: "Apostar para solucionar problemas económicos", correct: false }
+      { text: "Buenos Aires, Córdoba y Mendoza", correct: false },
+      { text: "Santa Fe, Rosario y Rafaela", correct: true },
+      { text: "La Plata, Mar del Plata y Bahía Blanca", correct: false }
     ]
   },
   {
-    qestion: "¿Cuál de estas prácticas es una señal de alerta de juego problemático?",
-    adult: true,
+    qestion: "¿Cuántos países participarán en los XIII Juegos Suramericanos?",
     answers: [
-      { text: "Ver los juegos como distracción ocasional", correct: false },
-      { text: "Gastar más dinero o tiempo del que se planeó", correct: true },
-      { text: "Jugar en familia o con amigos de vez en cuando", correct: false }
+      { text: "10", correct: false },
+      { text: "15", correct: true },
+      { text: "20", correct: false }
     ]
   },
   {
-    qestion: "¿Qué símbolo debe estar siempre presente en los productos y comunicaciones de juegos de azar?",
-    adult: true,
+    qestion: "¿Qué organismo organiza los Juegos Suramericanos?",
     answers: [
-      { text: "+16", correct: false },
-      { text: "+18", correct: true },
-      { text: "“Prohibido jugar”", correct: false }
+      { text: "COI (Comité Olímpico Internacional)", correct: false },
+      { text: "ODESUR (Organización Deportiva Suramericana)", correct: true },
+      { text: "FIFA", correct: false }
     ]
   },
   {
-    qestion: "Si un jugador necesita ayuda o asesoramiento por problemas con el juego, ¿qué debe hacer?",
-    adult: true,
+    qestion: "¿Cuántos deportes se disputarán en los Juegos Suramericanos 2026?",
     answers: [
-      { text: "Guardarlo en secreto", correct: false },
-      { text: "Buscar apoyo en la línea de ayuda de Juego Responsable 2804-999-777", correct: true },
-      { text: "Seguir jugando hasta recuperar lo perdido", correct: false }
+      { text: "25", correct: false },
+      { text: "43", correct: true },
+      { text: "60", correct: false }
     ]
   },
   {
-    qestion: "¿Cuál es el principal objetivo del JUEGO RESPONSABLE?",
-    adult: true,
+    qestion: "¿Cuántas disciplinas deportivas incluye el programa?",
     answers: [
-      { text: "Que el jugador se divierta de forma segura", correct: true },
-      { text: "Que el casino siempre gane", correct: false },
-      { text: "Que todos jueguen sin importar la edad", correct: false }
+      { text: "30", correct: false },
+      { text: "60", correct: true },
+      { text: "80", correct: false }
     ]
   },
   {
-    qestion: "Si un familiar o amigo te cuenta que está jugando más de lo que debería, ¿qué hacés?",
-    adult: true,
+    qestion: "¿Cuál es la mascota oficial de los Juegos Suramericanos 2026?",
     answers: [
-      { text: "Lo ignorás", correct: false },
-      { text: "Le aconsejás que busque ayuda y lo acompañás", correct: true },
-      { text: "Le decís que siga, la suerte siempre cambia", correct: false }
-    ]
-  },
-
-  // -18
-  {
-    qestion: "¿Qué significa jugar de manera responsable en videojuegos o juegos online?",
-    adult: false,
-    answers: [
-      { text: "Jugar sin parar toda la noche", correct: false },
-      { text: "Jugar con límites de tiempo y sin descuidar otras actividades", correct: true },
-      { text: "Jugar solo si se gana siempre", correct: false }
+      { text: "Capi", correct: true },
+      { text: "Santa", correct: false },
+      { text: "Rafa", correct: false }
     ]
   },
   {
-    qestion: "¿Cuál de estas es una señal de que el juego ya no es saludable?",
-    adult: false,
+    qestion: "¿Qué importante infraestructura se construye en Rafaela para los Juegos?",
     answers: [
-      { text: "Jugar un rato con amigos", correct: false },
-      { text: "Dejar de dormir, estudiar o entrenar por jugar demasiado", correct: true },
-      { text: "Reírse y pasarla bien", correct: false }
+      { text: "Un estadio de fútbol", correct: false },
+      { text: "Un velódromo cubierto con pista de madera", correct: true },
+      { text: "Un centro acuático olímpico", correct: false }
     ]
   },
   {
-    qestion: "Si ves el símbolo +18 en una app o publicidad de juegos de azar, ¿qué significa?",
-    adult: false,
+    qestion: "¿Cuál de estas NO es una sede de los Juegos Suramericanos 2026?",
     answers: [
-      { text: "Que es un juego más difícil", correct: false },
-      { text: "Que solo es para adultos", correct: true },
-      { text: "Que la descarga es gratuita", correct: false }
+      { text: "Rosario", correct: false },
+      { text: "Rafaela", correct: false },
+      { text: "Paraná", correct: true }
     ]
   },
   {
-    qestion: "Cuando jugás online, ¿qué debería ser lo más importante?",
-    adult: false,
+    qestion: "¿Cuántos atletas aproximadamente participarán en los Juegos?",
     answers: [
-      { text: "Ganar a toda costa", correct: false },
-      { text: "Pasarla bien y divertirse", correct: true },
-      { text: "Jugar aunque te haga sentir mal", correct: false }
+      { text: "1.000", correct: false },
+      { text: "4.000", correct: true },
+      { text: "10.000", correct: false }
     ]
   },
   {
-    qestion: "¿Qué podés hacer para mantener el equilibrio con los juegos online?",
-    adult: false,
+    qestion: "¿Cuántos escenarios deportivos tendrán los Juegos Suramericanos 2026?",
     answers: [
-      { text: "Poner un límite de tiempo", correct: true },
-      { text: "Jugar sin parar hasta cansarte", correct: false },
-      { text: "No hacer pausas nunca", correct: false }
+      { text: "20", correct: false },
+      { text: "39", correct: true },
+      { text: "50", correct: false }
     ]
   },
   {
-    qestion: "Si un amigo tuyo juega demasiado y descuida otras cosas, ¿qué harías?",
-    adult: false,
+    qestion: "¿Qué infraestructura se construye en el CARD de la ciudad de Santa Fe?",
     answers: [
-      { text: "Ignorarlo", correct: false },
-      { text: "Aconsejarlo para que haga pausas y se organice", correct: true },
-      { text: "Decirle que juegue más que vos", correct: false }
+      { text: "Un estadio multipropósito para 7.000 espectadores", correct: true },
+      { text: "Un centro comercial", correct: false },
+      { text: "Un hotel 5 estrellas", correct: false }
+    ]
+  },
+  {
+    qestion: "¿Cuál de estos deportes forma parte del programa de los Juegos?",
+    answers: [
+      { text: "Fútbol americano", correct: false },
+      { text: "Skateboarding", correct: true },
+      { text: "Críquet", correct: false }
+    ]
+  },
+  {
+    qestion: "¿Qué país NO forma parte de ODESUR?",
+    answers: [
+      { text: "Chile", correct: false },
+      { text: "Colombia", correct: false },
+      { text: "México", correct: true }
+    ]
+  },
+  {
+    qestion: "¿Qué deporte urbano se incorpora en las sedes de Rafaela?",
+    answers: [
+      { text: "Skateboarding (Skate Park en el Eco Parque)", correct: true },
+      { text: "Breakdance", correct: false },
+      { text: "Surf", correct: false }
+    ]
+  },
+  {
+    qestion: "¿De dónde se importó la pista de atletismo del CARD Santa Fe?",
+    answers: [
+      { text: "Alemania", correct: false },
+      { text: "Italia", correct: true },
+      { text: "Estados Unidos", correct: false }
+    ]
+  },
+  {
+    qestion: "¿Cuánto es la inversión total estimada para los Juegos Suramericanos 2026?",
+    answers: [
+      { text: "50 millones de USD", correct: false },
+      { text: "140 millones de USD", correct: true },
+      { text: "500 millones de USD", correct: false }
+    ]
+  },
+  {
+    qestion: "¿Qué banco otorgó un crédito de 75 millones de USD para los Juegos?",
+    answers: [
+      { text: "Banco Mundial", correct: false },
+      { text: "CAF (Banco de Desarrollo de América Latina y el Caribe)", correct: true },
+      { text: "FMI", correct: false }
+    ]
+  },
+  {
+    qestion: "¿Cuántos escenarios tiene la sede Rosario?",
+    answers: [
+      { text: "20", correct: true },
+      { text: "9", correct: false },
+      { text: "7", correct: false }
+    ]
+  },
+  {
+    qestion: "¿Qué infraestructura acuática se construye en Rosario?",
+    answers: [
+      { text: "Un parque acuático", correct: false },
+      { text: "Un Centro Acuático Provincial con piletas olímpicas", correct: true },
+      { text: "Un acuario", correct: false }
     ]
   }
 ];
-
