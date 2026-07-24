@@ -1,0 +1,21 @@
+<div class="background">
+  <div class="jackpot-content">
+    <img src="cards/logo-suramericanos.svg" alt="Juegos Suramericanos" class="main-logo">
+
+    <div class="reels-container">
+      <div class="reel" *ngFor="let strip of strips; index as i" [class.active-spin]="reelSpinning[i]">
+        <div class="reel-window">
+          <div class="reel-strip" [style.transform]="'translateY(' + offsets[i] + 'px)'" [style.transition]="transitions[i]">
+            <div class="strip-item" *ngFor="let s of strip">
+              <img [src]="s" alt="símbolo" [class.capi]="s.includes('capi')">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <button class="spin-btn" (click)="spin()" [disabled]="spinning">
+      {{ spinning ? 'GIRANDO...' : 'GIRAR' }}
+    </button>
+  </div>
+</div>

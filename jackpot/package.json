@@ -1,0 +1,43 @@
+{
+  "name": "jackpot",
+  "version": "1.0.0",
+  "description": "Jackpot - Máquina tragamonedas Suramericanos",
+  "main": "main.js",
+  "author": "Tu Nombre",
+  "license": "MIT",
+  "scripts": {
+    "start": "ng serve",
+    "electron": "electron .",
+    "build-angular": "cd jackpot && npx ng build --configuration production --base-href ./ --output-path ../dist/browser",
+    "start-electron": "npx electron .",
+    "dist": "cd jackpot && npx ng build --configuration production --base-href ./ --output-path ../dist/browser && cd .. && electron-builder --win --publish never"
+  },
+  "dependencies": {
+    "sweetalert2": "^11.23.0"
+  },
+  "devDependencies": {
+    "electron": "^38.0.0",
+    "electron-builder": "^26.0.12"
+  },
+  "build": {
+    "appId": "com.chubut.jackpot",
+    "productName": "Jackpot",
+    "directories": {
+      "output": "dist-electron"
+    },
+    "files": [
+      "dist/browser/**/*",
+      "main.js",
+      "package.json"
+    ],
+    "win": {
+      "target": [
+        "nsis"
+      ],
+      "forceCodeSigning": false,
+      "icon": "icono.ico"
+    },
+    "mac": null,
+    "linux": null
+  }
+}
