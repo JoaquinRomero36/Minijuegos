@@ -1,5 +1,4 @@
-<div class="background">  
-  <audio src="./aud/music.mp3" autoplay loop></audio>
+<div class="background">
   @if(juegoFlag){
   <div class="game-wrapper">
     <div class="hud">
@@ -22,13 +21,11 @@
         [class.matched]="card.matched"
       >
         <div class="card-inner" [class.flipped]="card.flipped || card.matched">
-          <!-- reverso -->
           <div class="card-face card-back">
             <div class="pattern"></div>
           </div>
-          <!-- frente -->
           <div class="card-face card-front">
-            <img [src]="card.image" alt="img" />
+            <img [src]="card.image" alt="flag" />
           </div>
         </div>
       </div>
@@ -36,11 +33,12 @@
   </div>
 }
 @if(!juegoFlag) {
-  <h1 class="header-game">Memotest</h1>
-  <h3 class="header-game">Encontrá los ocho pares de cartas antes de que se termine el tiempo</h3>
+  <img src='cards/logo-suramericanos.svg' alt="Juegos Suramericanos" class="main-logo">
+  <h1 class="title-text">Memotest</h1>
+  <h3 class="subtitle-text">Encontrá los ocho pares de banderas antes de que se termine el tiempo</h3>
   <button class="button-default" (click)="jugar()">JUGAR</button>
 }
 <div class="footer">
-  <img src='./cards/logo.jpg' alt="Logo de la empresa">
+  <img src='cards/logo-suramericanos.svg' alt="Juegos Suramericanos">
 </div>
 </div>
