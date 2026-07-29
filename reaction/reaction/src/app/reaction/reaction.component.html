@@ -1,0 +1,51 @@
+<div class="background">
+  <div class="deco-blob deco-blob-1"></div>
+  <div class="deco-blob deco-blob-2"></div>
+
+  @if(!juegoFlag && phase === 'idle') {
+    <div class="menu">
+      <img src="cards/logo-suramericanos.svg" alt="Juegos Suramericanos" class="main-logo">
+      <h1 class="title-text">TIEMPO DE REACCIÓN</h1>
+      <h3 class="subtitle-text">Cada segundo cuenta</h3>
+      <button class="start-btn" (click)="jugar()">JUGAR</button>
+    </div>
+  }
+
+  @if(juegoFlag) {
+    <div class="game-area" (click)="handleTap()" (touchstart)="handleTap()"
+         [class.phase-waiting]="phase === 'waiting'"
+         [class.phase-go]="phase === 'go'"
+         [class.phase-feedback]="phase === 'feedback'">
+
+      <div class="phase-label">
+        @if(phase === 'waiting') {
+          <span class="phase-text small">Preparado?</span>
+        }
+        @if(phase === 'go') {
+          <span class="phase-text go">YA!</span>
+        }
+        @if(phase === 'feedback' && lastTime > 0) {
+          <span class="phase-time">{{ lastTime }} ms</span>
+          <span class="phase-classify">{{ classify(lastTime) }}</span>
+        }
+        @if(phase === 'feedback' && lastTime === 0) {
+          <span class="phase-text false-start">FALSO!</span>
+        }
+      </div>
+
+      <div class="round-info">
+        Ronda {{ round }} / {{ TOTAL_ROUNDS }}
+      </div>
+    </div>
+  }
+
+  <div class="footer">
+    <div class="footer-logos">
+      <img src="cards/logo-suramericanos.svg" alt="Juegos Suramericanos">
+      <img src="cards/logo-santafe.svg" alt="Santa Fe">
+      <img src="cards/logo-rosario.svg" alt="Rosario">
+      <img src="cards/logo-rafaela.svg" alt="Rafaela">
+      <img src="cards/logo-municipio-sf.svg" alt="Municipalidad Santa Fe">
+    </div>
+  </div>
+</div>

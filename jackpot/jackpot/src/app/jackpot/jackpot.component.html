@@ -1,4 +1,6 @@
 <div class="background">
+  <div class="deco-blob deco-blob-1"></div>
+  <div class="deco-blob deco-blob-2"></div>
   <div class="jackpot-content">
     <img src="cards/logo-suramericanos.svg" alt="Juegos Suramericanos" class="main-logo">
 
@@ -17,5 +19,14 @@
     <button class="spin-btn" (click)="spin()" [disabled]="spinning">
       {{ spinning ? 'GIRANDO...' : 'GIRAR' }}
     </button>
+  </div>
+  <div class="footer">
+    <div class="footer-logos">
+      <img src="cards/logo-suramericanos.svg" alt="Juegos Suramericanos">
+      <img src="cards/logo-santafe.svg" alt="Santa Fe">
+      <img src="cards/logo-rosario.svg" alt="Rosario">
+      <img src="cards/logo-rafaela.svg" alt="Rafaela">
+      <img src="cards/logo-municipio-sf.svg" alt="Municipalidad Santa Fe">
+    </div>
   </div>
 </div>

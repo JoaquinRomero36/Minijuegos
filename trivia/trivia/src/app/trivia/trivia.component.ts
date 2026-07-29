@@ -172,9 +172,9 @@ export class TriviaComponent implements OnInit, OnDestroy {
         timerProgressBar: true,
         padding: '80px',
         customClass: {
-          popup: 'swal2-popup',
+          popup: 'swal-suramericanos',
           title: 'swal2-title',
-          confirmButton: 'swal2-confirm'
+          confirmButton: 'swal-btn-gradient'
         }
       }).then(() => {
         this.timeLeft = 15;
@@ -193,9 +193,9 @@ export class TriviaComponent implements OnInit, OnDestroy {
         timerProgressBar: true,
         padding: '80px',
         customClass: {
-          popup: 'swal2-popup',
+          popup: 'swal-suramericanos',
           title: 'swal2-title',
-          confirmButton: 'swal2-confirm'
+          confirmButton: 'swal-btn-gradient'
         }
       }).then(() => {
         this.timeLeft = 15;

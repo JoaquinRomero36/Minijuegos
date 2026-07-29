@@ -4,11 +4,62 @@
   left: 0;
   width: 100%;
   min-height: 100%;
-  background: linear-gradient(90deg, rgb(249,0,78) 0%, rgb(255,140,0) 50%, rgb(81,57,212) 100%);
+  background: linear-gradient(160deg, rgb(81,57,212) 0%, rgb(200,40,120) 25%, rgb(249,0,78) 50%, rgb(255,140,0) 75%, rgb(255,180,50) 100%);
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 0;
+  overflow: hidden;
+}
+
+.background::before {
+  content: '';
+  position: fixed;
+  bottom: -5%;
+  left: -15%;
+  width: 130%;
+  height: 55%;
+  background: linear-gradient(135deg, rgba(249,0,78,0.25), rgba(255,200,50,0.12) 40%, transparent 70%);
+  border-radius: 40% 60% 0 0;
+  transform: skewY(-4deg);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.background::after {
+  content: '';
+  position: fixed;
+  top: -15%;
+  right: -10%;
+  width: 80vmin;
+  height: 80vmin;
+  background: radial-gradient(circle, rgba(81,57,212,0.25) 0%, rgba(200,40,120,0.1) 40%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.deco-blob {
+  position: fixed;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.deco-blob-1 {
+  bottom: 30%;
+  left: -8%;
+  width: 50vmin;
+  height: 50vmin;
+  background: radial-gradient(circle, rgba(255,140,0,0.15), transparent 70%);
+}
+
+.deco-blob-2 {
+  top: 40%;
+  right: -5%;
+  width: 35vmin;
+  height: 35vmin;
+  background: radial-gradient(circle, rgba(249,0,78,0.12), transparent 70%);
 }
 
 .jackpot-content {
@@ -117,6 +168,44 @@
   cursor: default;
 }
 
+.footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: #ffffff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 8px 16px;
+  z-index: 50;
+  box-sizing: border-box;
+}
+
+.footer-logos {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  max-width: 1200px;
+}
+
+.footer-logos img {
+  height: 40px;
+  width: auto;
+  display: block;
+  object-fit: contain;
+}
+
+.footer-logos img:first-child {
+  height: 50px;
+}
+
+.footer-logos img:not(:first-child) {
+  filter: brightness(0);
+}
+
 @media (min-height: 2000px) {
   .main-logo {
     height: 400px;
@@ -138,4 +227,7 @@
     font-size: 5rem;
     padding: 0.6em 2em;
   }
+
+  .footer-logos img { height: 100px; }
+  .footer-logos img:first-child { height: 130px; }
 }

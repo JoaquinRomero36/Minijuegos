@@ -134,10 +134,10 @@ export class JackpotComponent {
     this.spinning = true;
     this.reelSpinning = [true, true, true];
 
-    const tickSound = setInterval(() => this.playTick(), 90);
+    const tickSound = setInterval(() => this.playTick(), 100);
     const results = [this.randomSymbol(), this.randomSymbol(), this.randomSymbol()];
-    const stopDelays = [900, 2000, 3200];
-    const intervals = [65, 55, 45];
+    const stopDelays = [1200, 2600, 4000];
+    const intervals = [90, 80, 70];
 
     const spinFn = (i: number): void => {
       if (i > 2) return;
@@ -145,41 +145,46 @@ export class JackpotComponent {
 
       const tick = () => {
         if (stopped) return;
-        this.transitions[i] = `transform ${intervals[i]}ms linear`;
+        this.transitions[i] = 'none';
+        this.shiftStrip(i);
         this.offsets[i] = -this.ITEM_HEIGHT * 2;
 
         setTimeout(() => {
           if (stopped) return;
-          this.transitions[i] = 'none';
-          this.shiftStrip(i);
+          this.transitions[i] = `transform ${intervals[i]}ms linear`;
           this.offsets[i] = -this.ITEM_HEIGHT;
-          setTimeout(tick, 0);
-        }, intervals[i]);
+          setTimeout(tick, intervals[i]);
+        }, 0);
       };
 
-      tick();
+      this.offsets[i] = -this.ITEM_HEIGHT * 2;
+      setTimeout(() => {
+        this.transitions[i] = `transform ${intervals[i]}ms linear`;
+        this.offsets[i] = -this.ITEM_HEIGHT;
+        setTimeout(tick, intervals[i]);
+      }, 0);
 
       setTimeout(() => {
         stopped = true;
         this.transitions[i] = 'none';
-        this.strips[i][this.strips[i].length - 1] = results[i];
-        this.offsets[i] = -this.ITEM_HEIGHT;
+        this.strips[i][0] = this.strips[i][1];
+        this.strips[i][1] = results[i];
+        this.offsets[i] = -this.ITEM_HEIGHT * 2;
 
         setTimeout(() => {
-          this.transitions[i] = 'transform 200ms cubic-bezier(0.15, 0.85, 0.3, 1.05)';
-          this.offsets[i] = -this.ITEM_HEIGHT * 2;
+          this.transitions[i] = 'transform 250ms cubic-bezier(0.15, 0.85, 0.3, 1.05)';
+          this.offsets[i] = -this.ITEM_HEIGHT;
           this.reelSpinning[i] = false;
           this.playReelStop();
 
           setTimeout(() => {
             this.transitions[i] = 'none';
-            this.offsets[i] = -this.ITEM_HEIGHT * 2;
-          }, 250);
+          }, 300);
 
           if (i === 2) {
             setTimeout(() => {
               this.stopSpin(tickSound, results);
-            }, 350);
+            }, 400);
           }
         }, 0);
       }, stopDelays[i]);

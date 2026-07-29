@@ -1,0 +1,41 @@
+{
+  "name": "reaction",
+  "version": "1.0.0",
+  "description": "Tiempo de Reacción - Poné a prueba tus reflejos",
+  "main": "main.js",
+  "author": "Tu Nombre",
+  "license": "MIT",
+  "scripts": {
+    "start": "ng serve",
+    "electron": "electron .",
+    "build-angular": "cd reaction && npx ng build --configuration production --base-href ./ --output-path ../dist/browser",
+    "start-electron": "npx electron .",
+    "dist": "cd reaction && npx ng build --configuration production --base-href ./ --output-path ../dist/browser && cd .. && electron-builder --win --publish never"
+  },
+  "dependencies": {
+    "sweetalert2": "^11.23.0"
+  },
+  "devDependencies": {
+    "electron": "^38.0.0",
+    "electron-builder": "^26.0.12"
+  },
+  "build": {
+    "appId": "com.chubut.reaction",
+    "productName": "Tiempo de Reacción",
+    "directories": {
+      "output": "dist-electron"
+    },
+    "files": [
+      "dist/browser/**/*",
+      "main.js",
+      "package.json"
+    ],
+    "win": {
+      "target": ["nsis"],
+      "forceCodeSigning": false,
+      "icon": "icono.ico"
+    },
+    "mac": null,
+    "linux": null
+  }
+}

@@ -1,5 +1,8 @@
 <div class="ruleta-container">
-  <div class="background"></div>
+  <div class="background">
+    <div class="deco-blob deco-blob-1"></div>
+    <div class="deco-blob deco-blob-2"></div>
+  </div>
   @if(resultVisible){
     <div class="result-overlay">
       <div class="result-text" [ngClass]="resultAnimClass" [innerHTML]="resultText"></div>
@@ -10,5 +13,14 @@
     <h2 class="title-text">Girá la ruleta y descubrí tu país</h2>
     <div id="roulette-container" class="roulette-box"></div>
     <button class="spin-btn" (click)="spin()">GIRAR RULETA</button>
+  </div>
+  <div class="footer">
+    <div class="footer-logos">
+      <img src='cards/logo-suramericanos.svg' alt="Juegos Suramericanos">
+      <img src='cards/logo-santafe.svg' alt="Santa Fe">
+      <img src='cards/logo-rosario.svg' alt="Rosario">
+      <img src='cards/logo-rafaela.svg' alt="Rafaela">
+      <img src='cards/logo-municipio-sf.svg' alt="Municipalidad Santa Fe">
+    </div>
   </div>
 </div>

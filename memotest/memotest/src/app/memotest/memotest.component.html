@@ -1,4 +1,6 @@
 <div class="background">
+  <div class="deco-blob deco-blob-1"></div>
+  <div class="deco-blob deco-blob-2"></div>
   @if(juegoFlag){
   <div class="game-wrapper">
     <div class="hud">
@@ -38,7 +40,18 @@
   <h3 class="subtitle-text">Encontrá los ocho pares de banderas antes de que se termine el tiempo</h3>
   <button class="button-default" (click)="jugar()">JUGAR</button>
 }
+@if(countdownVisible){
+  <div class="countdown-overlay">
+    <div class="countdown-text" [ngClass]="countdownAnimClass">{{ countdownText }}</div>
+  </div>
+}
 <div class="footer">
-  <img src='cards/logo-suramericanos.svg' alt="Juegos Suramericanos">
+  <div class="footer-logos">
+    <img src='cards/logo-suramericanos.svg' alt="Juegos Suramericanos">
+    <img src='cards/logo-santafe.svg' alt="Santa Fe">
+    <img src='cards/logo-rosario.svg' alt="Rosario">
+    <img src='cards/logo-rafaela.svg' alt="Rafaela">
+    <img src='cards/logo-municipio-sf.svg' alt="Municipalidad Santa Fe">
+  </div>
 </div>
 </div>

@@ -28,6 +28,31 @@ export class MemotestComponent implements OnInit, OnDestroy {
   winSound = new Audio('aud/win2.mp3');
   looseSound = new Audio('aud/lose2.mp3');
 
+  countdownVisible = false;
+  countdownText = '';
+  countdownAnimClass = '';
+  private audioCtx: AudioContext | null = null;
+
+  private getCtx(): AudioContext {
+    if (!this.audioCtx) this.audioCtx = new AudioContext();
+    if (this.audioCtx.state === 'suspended') this.audioCtx.resume();
+    return this.audioCtx;
+  }
+
+  private playBeep(freq: number, dur = 0.25) {
+    const ctx = this.getCtx();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.frequency.value = freq;
+    osc.type = 'sine';
+    gain.gain.setValueAtTime(0.15, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + dur);
+    osc.start();
+    osc.stop(ctx.currentTime + dur);
+  }
+
   private readonly ALL_IMAGES: string[] = [
     'https://flagcdn.com/w80/ar.png',
     'https://flagcdn.com/w80/br.png',
@@ -59,6 +84,7 @@ export class MemotestComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.stopTimer();
+    if (this.audioCtx) this.audioCtx.close();
   }
 
   startGame(): void {
@@ -220,8 +246,30 @@ export class MemotestComponent implements OnInit, OnDestroy {
   }
 
   jugar() {
-    this.juegoFlag = true;
-    this.startGame();
+    this.countdownVisible = true;
+    this.runCountdown();
+  }
+
+  runCountdown() {
+    const steps = ['3', '2', '1', 'EMPIEZA'];
+    let i = 0;
+    const showNext = () => {
+      if (i < steps.length) {
+        this.countdownText = steps[i];
+        this.countdownAnimClass = '';
+        this.playBeep(steps[i] === 'EMPIEZA' ? 880 : 440);
+        setTimeout(() => {
+          this.countdownAnimClass = steps[i] === 'EMPIEZA' ? 'pop empieza' : 'pop';
+        }, 20);
+        i++;
+        setTimeout(showNext, 900);
+      } else {
+        this.countdownVisible = false;
+        this.juegoFlag = true;
+        this.startGame();
+      }
+    };
+    showNext();
   }
 
   volverAJugar() {
