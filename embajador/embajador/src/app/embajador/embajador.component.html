@@ -1,0 +1,122 @@
+<div class="background">
+  <div class="deco-blob deco-blob-1"></div>
+  <div class="deco-blob deco-blob-2"></div>
+
+  @if(step === 0) {
+    <div class="menu">
+      <img src="cards/logo-suramericanos.svg" alt="Juegos Suramericanos" class="main-logo">
+      <h1 class="title-text">CONVERTITE EN<br>EMBAJADOR DE RAFAELA 2026</h1>
+      <h3 class="subtitle-text">Respondé 3 preguntas rápidas y llevate tu credencial digital para compartir</h3>
+      <button class="start-btn" (click)="empezar()">COMENZAR</button>
+    </div>
+  }
+
+  @if(step >= 1 && step <= 4) {
+    <div class="form-wrap">
+      <div class="progress">
+        @for(i of [1,2,3,4]; track $index) {
+          <div class="progress-dot" [class.active]="i === step" [class.done]="i < step"></div>
+        }
+      </div>
+
+      <button class="back-btn" (click)="volverAtras()">← Atrás</button>
+
+      @if(step === 1) {
+        <div class="card-step">
+          <h2 class="step-title">¿Cómo te llamás?</h2>
+          <p class="step-sub">Va a aparecer en tu credencial</p>
+          <input class="name-input" type="text" [(ngModel)]="nombre" maxlength="24" placeholder="Escribí tu nombre"
+                 (keydown.enter)="confirmarNombre()" autofocus>
+          <button class="confirm-btn" (click)="confirmarNombre()" [class.disabled]="!nombre.trim()">SIGUIENTE</button>
+        </div>
+      }
+
+      @if(step === 2) {
+        <div class="card-step">
+          <h2 class="step-title">¿Qué lugar de Rafaela visitarías?</h2>
+          <div class="options-grid">
+            @for(op of LUGARES; track op) {
+              <button class="option-btn" (click)="seleccionarLugar(op)">{{ op }}</button>
+            }
+          </div>
+        </div>
+      }
+
+      @if(step === 3) {
+        <div class="card-step">
+          <h2 class="step-title">¿Qué plato típico probarías?</h2>
+          <div class="options-grid">
+            @for(op of PLATOS; track op) {
+              <button class="option-btn" (click)="seleccionarPlato(op)">{{ op }}</button>
+            }
+          </div>
+        </div>
+      }
+
+      @if(step === 4) {
+        <div class="card-step">
+          <h2 class="step-title">¿Qué mensaje le dejarías a los visitantes?</h2>
+          <div class="options-grid">
+            @for(op of MENSAJES; track op) {
+              <button class="option-btn" (click)="seleccionarMensaje(op)">{{ op }}</button>
+            }
+          </div>
+        </div>
+      }
+    </div>
+  }
+
+  @if(step === 5) {
+    <div class="credential-wrap">
+      <div class="credential-card" id="credential-card">
+        <div class="cred-header">
+          <img src="cards/logo-suramericanos.svg" alt="Juegos Suramericanos">
+          <span class="cred-event">XIII Juegos Suramericanos · Santa Fe 2026</span>
+        </div>
+        <div class="cred-body">
+          <p class="cred-line">{{ displayNombre }}</p>
+          <p class="cred-title">es <b>Embajador/a</b><br>de Rafaela 2026</p>
+          <div class="cred-answers">
+            <div class="cred-item">
+              <span class="cred-label">LUGAR</span>
+              <span class="cred-value">{{ lugar }}</span>
+            </div>
+            <div class="cred-item">
+              <span class="cred-label">PLATO</span>
+              <span class="cred-value">{{ plato }}</span>
+            </div>
+            <div class="cred-item">
+              <span class="cred-label">MENSAJE</span>
+              <span class="cred-value">{{ mensaje }}</span>
+            </div>
+          </div>
+          <p class="cred-hashtag">{{ HASHTAG }}</p>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button class="download-btn" id="btn-descargar" (click)="descargar()" [disabled]="generatingQr">
+          📥 DESCARGAR CREDENCIAL
+        </button>
+        <button class="again-btn" (click)="reiniciar()">CREAR OTRA</button>
+      </div>
+
+      <div class="qr-box">
+        <p class="qr-hint">Escaneá el código para compartir tu credencial</p>
+        @if(qrDataUrl) {
+          <img class="qr-img" [src]="qrDataUrl" alt="QR">
+        }
+      </div>
+    </div>
+  }
+
+  <div class="footer">
+    <div class="footer-logos">
+      <img src="cards/logo-suramericanos.svg" alt="Juegos Suramericanos">
+      <img src="cards/logo-santafe.svg" alt="Santa Fe">
+      <img src="cards/logo-rosario.svg" alt="Rosario">
+      <img src="cards/logo-rafaela.svg" alt="Rafaela">
+      <img src="cards/logo-municipio-sf.svg" alt="Municipalidad Santa Fe">
+    </div>
+  </div>
+</div>

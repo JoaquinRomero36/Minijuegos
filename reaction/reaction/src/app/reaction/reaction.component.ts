@@ -138,10 +138,10 @@ export class ReactionComponent implements OnDestroy {
   }
 
   classify(t: number): string {
-    if (t < 200) return 'Excelente 🏆';
-    if (t < 300) return 'Bien ✅';
-    if (t < 400) return 'Regular 😬';
-    return 'Lento 🐢';
+    if (t < 200) return '¡Excelente!';
+    if (t < 300) return 'Bien!';
+    if (t < 400) return 'Regular';
+    return 'Un poco lento';
   }
 
   endGame() {

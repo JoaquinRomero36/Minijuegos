@@ -2,3 +2,7 @@ node_modules/
 dist/
 dist-electron/
 .vscode/
+*.log
+.playwright-mcp/
+embajador-inicio.png
+santafe2026.png

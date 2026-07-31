@@ -1,0 +1,53 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,100..900&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  font-family: 'Inter', sans-serif;
+}
+
+.swal-suramericanos {
+  background: #ffffff !important;
+  color: #333 !important;
+  border: none !important;
+}
+
+.swal-suramericanos .swal2-title {
+  color: #333 !important;
+  font-family: 'Inter', sans-serif !important;
+}
+
+.swal-btn-gradient {
+  background: linear-gradient(90deg, rgb(249,0,78) 0%, rgb(255,140,0) 50%, rgb(81,57,212) 100%) !important;
+  color: #fff !important;
+  font-family: 'Inter', sans-serif !important;
+  font-weight: 600 !important;
+  border-radius: 50px !important;
+  padding: 12px 32px !important;
+  transition: transform 0.2s ease !important;
+}
+
+.swal-btn-gradient:hover {
+  transform: scale(1.05) !important;
+}
+
+@media (min-height: 2000px) {
+.swal-suramericanos {
+  width: 1600px !important;
+  border-radius: 30px !important;
+}
+
+.swal-suramericanos .swal2-title {
+  font-size: 5rem !important;
+}
+
+.swal-btn-gradient {
+  font-size: 2rem !important;
+  padding: 1.5rem 4rem !important;
+}
+}
