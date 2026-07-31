@@ -22,6 +22,7 @@ export class EmbajadorComponent {
 
   qrDataUrl = '';
   generatingQr = false;
+  downloading = false;
 
   readonly HASHTAG = '#Rafaela2026';
 
@@ -151,16 +152,24 @@ export class EmbajadorComponent {
   }
 
   async descargar() {
-    const card = document.getElementById('credential-card');
-    if (!card) return;
+    const card = document.getElementById('story-card');
+    if (!card || this.downloading) return;
 
+    this.downloading = true;
     const btn = document.getElementById('btn-descargar');
     if (btn) {
       btn.classList.add('btn-hidden');
     }
 
     try {
-      const canvas = await html2canvas(card, { scale: 2, useCORS: true, backgroundColor: '#ffffff' });
+      const canvas = await html2canvas(card, {
+        width: 1080,
+        height: 1920,
+        scale: 1,
+        windowWidth: 1080,
+        windowHeight: 1920,
+        useCORS: true
+      });
       const dataUrl = canvas.toDataURL('image/png');
       const fileName = `embajador-rafaela-${this.nombre.trim().replace(/\s+/g, '-').toLowerCase()}.png`;
 
@@ -190,6 +199,7 @@ export class EmbajadorComponent {
         customClass: { popup: 'swal-suramericanos', title: 'swal2-title', confirmButton: 'swal-btn-gradient' }
       });
     } finally {
+      this.downloading = false;
       if (btn) btn.classList.remove('btn-hidden');
     }
   }

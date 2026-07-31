@@ -95,7 +95,7 @@
       </div>
 
       <div class="actions">
-        <button class="download-btn" id="btn-descargar" (click)="descargar()" [disabled]="generatingQr">
+        <button class="download-btn" id="btn-descargar" (click)="descargar()" [disabled]="generatingQr || downloading">
           📥 DESCARGAR CREDENCIAL
         </button>
         <button class="again-btn" (click)="reiniciar()">CREAR OTRA</button>
@@ -109,6 +109,39 @@
       </div>
     </div>
   }
+
+  <div class="story-card" id="story-card">
+    <div class="story-blob story-blob-1"></div>
+    <div class="story-blob story-blob-2"></div>
+    <div class="story-inner">
+      <img class="story-logo" src="cards/logo-suramericanos-white.png" alt="Juegos Suramericanos">
+      <div class="story-event">XIII Juegos Suramericanos<br>Santa Fe 2026</div>
+      <div class="story-name">{{ displayNombre }}</div>
+      <div class="story-title">es <b>Embajador/a</b> de<br>Rafaela 2026</div>
+      <div class="story-answers">
+        <div class="story-item">
+          <span class="story-label">Lugar</span>
+          <span class="story-value">{{ lugar }}</span>
+        </div>
+        <div class="story-item">
+          <span class="story-label">Plato</span>
+          <span class="story-value">{{ plato }}</span>
+        </div>
+        <div class="story-item">
+          <span class="story-label">Mensaje</span>
+          <span class="story-value">{{ mensaje }}</span>
+        </div>
+      </div>
+      <div class="story-qr-box">
+        @if(qrDataUrl) {
+          <img class="story-qr" [src]="qrDataUrl" alt="QR">
+        }
+      </div>
+      <div class="story-hint">Escaneá el código y creá la tuya</div>
+      <div class="story-hashtag">{{ HASHTAG }}</div>
+      <div class="story-cta">XIII Juegos Suramericanos · Santa Fe 2026</div>
+    </div>
+  </div>
 
   <div class="footer">
     <div class="footer-logos">
