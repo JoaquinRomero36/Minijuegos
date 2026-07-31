@@ -23,6 +23,9 @@ export class EmbajadorComponent {
   qrDataUrl = '';
   generatingQr = false;
   downloading = false;
+  storyDataUrl = '';
+  storyReady = false;
+  generatingStory = false;
 
   readonly HASHTAG = '#Rafaela2026';
 
@@ -149,18 +152,14 @@ export class EmbajadorComponent {
     } finally {
       this.generatingQr = false;
     }
+    this.prepararStory();
   }
 
-  async descargar() {
+  private async prepararStory() {
+    if (this.storyReady || this.generatingStory) return;
     const card = document.getElementById('story-card');
-    if (!card || this.downloading) return;
-
-    this.downloading = true;
-    const btn = document.getElementById('btn-descargar');
-    if (btn) {
-      btn.classList.add('btn-hidden');
-    }
-
+    if (!card) return;
+    this.generatingStory = true;
     try {
       const canvas = await html2canvas(card, {
         width: 1080,
@@ -170,8 +169,57 @@ export class EmbajadorComponent {
         windowHeight: 1920,
         useCORS: true
       });
-      const dataUrl = canvas.toDataURL('image/png');
-      const fileName = `embajador-rafaela-${this.nombre.trim().replace(/\s+/g, '-').toLowerCase()}.png`;
+      this.storyDataUrl = canvas.toDataURL('image/png');
+      this.storyReady = true;
+      await this.vincularQrDescarga();
+    } catch (e) {
+      console.error('Error generando story', e);
+    } finally {
+      this.generatingStory = false;
+    }
+  }
+
+  private async vincularQrDescarga() {
+    const w = window as any;
+    if (!w.require || !this.storyDataUrl) return;
+    try {
+      const ipc = w.require('electron').ipcRenderer;
+      const fileName = this.buildFileName();
+      const { url } = await ipc.invoke('save-story-png', { fileName, dataUrl: this.storyDataUrl });
+      if (url) {
+        this.qrDataUrl = await QRCode.toDataURL(url, { width: 400, margin: 2 });
+      }
+    } catch (e) {
+      console.error('Error vinculando QR de descarga', e);
+    }
+  }
+
+  private buildFileName(): string {
+    return `embajador-rafaela-${this.nombre.trim().replace(/\s+/g, '-').toLowerCase()}.png`;
+  }
+
+  async descargar() {
+    if (this.downloading) return;
+    if (!this.storyDataUrl) {
+      if (this.generatingStory) {
+        while (this.generatingStory && !this.storyDataUrl) {
+          await new Promise(r => setTimeout(r, 200));
+        }
+      } else {
+        await this.prepararStory();
+      }
+    }
+    if (!this.storyDataUrl) return;
+
+    this.downloading = true;
+    const btn = document.getElementById('btn-descargar');
+    if (btn) {
+      btn.classList.add('btn-hidden');
+    }
+
+    try {
+      const dataUrl = this.storyDataUrl;
+      const fileName = this.buildFileName();
 
       const guardado = this.saveViaNode(dataUrl, fileName);
       if (guardado) {
@@ -237,5 +285,7 @@ export class EmbajadorComponent {
     this.plato = '';
     this.mensaje = '';
     this.qrDataUrl = '';
+    this.storyDataUrl = '';
+    this.storyReady = false;
   }
 }

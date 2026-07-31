@@ -39,6 +39,7 @@ Cinco juegos/experiencias Angular 18 independientes (no es un monorepo):
 - Ruleta usa además `@theblindhawk/roulette`
 - Embajador usa `qrcode` + `@types/qrcode` (QR en pantalla) y `html2canvas` (exportar credencial a PNG); el QR codifica texto plano (sin hosting)
 - La descarga de la credencial en Embajador exporta la **story card oculta** (`#story-card`, 1080×1920) a PNG vertical listo para Instagram/WhatsApp Stories; en Electron guarda en `~/EmbajadorRafaela/` vía `window.require('fs')`, en browser usa un `<a download>`
+- **QR de descarga (Electron)**: al terminar, la story PNG se genera sola y se envía por IPC (`save-story-png`) al main de Electron, que la guarda en `%TEMP%/embajador-totem` y la sirve por un **servidor HTTP local** (`http://<IP-LAN>:<puerto>/<archivo>.png`); el QR en pantalla codifica esa URL para que el celular (misma red WiFi) descargue la imagen. En browser (dev) el QR cae a texto plano. El QR **no** aparece en la imagen descargada
 - `public/cards/logo-suramericanos-white.png` es el logo suramericanos rasterizado en blanco (fondo transparente) porque html2canvas no aplica filtros CSS ni renderiza SVGs externos
 - Cada Angular app tiene su propio `node_modules` y `package.json`
 - Las carpetas padre (Electron) tienen su propio `package.json` y `node_modules`

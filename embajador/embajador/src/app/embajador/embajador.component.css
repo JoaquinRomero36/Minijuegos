@@ -621,26 +621,6 @@ html, body {
   font-weight: 800;
 }
 
-.story-qr-box {
-  background: #ffffff;
-  border-radius: 26px;
-  padding: 22px;
-  margin-top: 38px;
-}
-
-.story-qr {
-  width: 280px;
-  height: 280px;
-  display: block;
-}
-
-.story-hint {
-  font-size: 26px;
-  font-weight: 600;
-  margin-top: 22px;
-  color: rgba(255,255,255,0.95);
-}
-
 .story-hashtag {
   font-size: 46px;
   font-weight: 900;

@@ -102,7 +102,7 @@
       </div>
 
       <div class="qr-box">
-        <p class="qr-hint">Escaneá el código para compartir tu credencial</p>
+        <p class="qr-hint">Escaneá el QR con tu celular y descargá tu credencial para compartirla</p>
         @if(qrDataUrl) {
           <img class="qr-img" [src]="qrDataUrl" alt="QR">
         }
@@ -132,12 +132,6 @@
           <span class="story-value">{{ mensaje }}</span>
         </div>
       </div>
-      <div class="story-qr-box">
-        @if(qrDataUrl) {
-          <img class="story-qr" [src]="qrDataUrl" alt="QR">
-        }
-      </div>
-      <div class="story-hint">Escaneá el código y creá la tuya</div>
       <div class="story-hashtag">{{ HASHTAG }}</div>
       <div class="story-cta">XIII Juegos Suramericanos · Santa Fe 2026</div>
     </div>
