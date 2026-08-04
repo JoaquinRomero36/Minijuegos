@@ -34,33 +34,30 @@
       @if(step === 2) {
         <div class="card-step">
           <h2 class="step-title">¿Qué lugar de Rafaela visitarías?</h2>
-          <div class="options-grid">
-            @for(op of LUGARES; track op) {
-              <button class="option-btn" (click)="seleccionarLugar(op)">{{ op }}</button>
-            }
-          </div>
+          <p class="step-sub">Va a aparecer en tu certificado</p>
+          <input class="name-input" type="text" [(ngModel)]="lugar" maxlength="40" placeholder="Escribí el lugar"
+                 (keydown.enter)="seleccionarLugar()">
+          <button class="confirm-btn" (click)="seleccionarLugar()" [class.disabled]="!lugar.trim()">SIGUIENTE</button>
         </div>
       }
 
       @if(step === 3) {
         <div class="card-step">
           <h2 class="step-title">¿Qué plato típico probarías?</h2>
-          <div class="options-grid">
-            @for(op of PLATOS; track op) {
-              <button class="option-btn" (click)="seleccionarPlato(op)">{{ op }}</button>
-            }
-          </div>
+          <p class="step-sub">Va a aparecer en tu certificado</p>
+          <input class="name-input" type="text" [(ngModel)]="plato" maxlength="40" placeholder="Escribí el plato"
+                 (keydown.enter)="seleccionarPlato()">
+          <button class="confirm-btn" (click)="seleccionarPlato()" [class.disabled]="!plato.trim()">SIGUIENTE</button>
         </div>
       }
 
       @if(step === 4) {
         <div class="card-step">
           <h2 class="step-title">¿Qué mensaje le dejarías a los visitantes?</h2>
-          <div class="options-grid">
-            @for(op of MENSAJES; track op) {
-              <button class="option-btn" (click)="seleccionarMensaje(op)">{{ op }}</button>
-            }
-          </div>
+          <p class="step-sub">Va a aparecer en tu certificado</p>
+          <input class="name-input" type="text" [(ngModel)]="mensaje" maxlength="60" placeholder="Escribí el mensaje"
+                 (keydown.enter)="seleccionarMensaje()">
+          <button class="confirm-btn" (click)="seleccionarMensaje()" [class.disabled]="!mensaje.trim()">SIGUIENTE</button>
         </div>
       }
     </div>
@@ -68,72 +65,68 @@
 
   @if(step === 5) {
     <div class="credential-wrap">
-      <div class="credential-card" id="credential-card">
-        <div class="cred-header">
-          <img src="cards/logo-suramericanos.svg" alt="Juegos Suramericanos">
-          <span class="cred-event">XIII Juegos Suramericanos · Santa Fe 2026</span>
+      @if(storyDataUrl) {
+        <img class="cert-preview-img" [src]="storyDataUrl" alt="Certificado de Embajador/a de Rafaela 2026">
+      } @else {
+        <div class="cert-preview-placeholder">
+          <p>Generando tu certificado…</p>
         </div>
-        <div class="cred-body">
-          <p class="cred-line">{{ displayNombre }}</p>
-          <p class="cred-title">es <b>Embajador/a</b><br>de Rafaela 2026</p>
-          <div class="cred-answers">
-            <div class="cred-item">
-              <span class="cred-label">LUGAR</span>
-              <span class="cred-value">{{ lugar }}</span>
-            </div>
-            <div class="cred-item">
-              <span class="cred-label">PLATO</span>
-              <span class="cred-value">{{ plato }}</span>
-            </div>
-            <div class="cred-item">
-              <span class="cred-label">MENSAJE</span>
-              <span class="cred-value">{{ mensaje }}</span>
-            </div>
-          </div>
-          <p class="cred-hashtag">{{ HASHTAG }}</p>
-        </div>
-      </div>
+      }
 
       <div class="actions">
-        <button class="download-btn" id="btn-descargar" (click)="descargar()" [disabled]="generatingQr || downloading">
-          📥 DESCARGAR CREDENCIAL
-        </button>
         <button class="again-btn" (click)="reiniciar()">CREAR OTRA</button>
       </div>
 
       <div class="qr-box">
         <p class="qr-hint">Escaneá el QR con tu celular y descargá tu credencial para compartirla</p>
-        @if(qrDataUrl) {
+        @if(qrMode === 'generating') {
+          <p class="qr-wait">Generando tu QR de descarga…</p>
+        }
+        @if(qrMode === 'url') {
           <img class="qr-img" [src]="qrDataUrl" alt="QR">
+        }
+        @if(qrMode === 'invite') {
+          <img class="qr-img" [src]="qrDataUrl" alt="QR">
+          <p class="qr-fallback">Si no descarga, sacale una foto a la pantalla</p>
+        }
+        @if(qrMode === 'dev') {
+          <p class="qr-dev-note">El QR de descarga funciona en el totem (app instalada).</p>
         }
       </div>
     </div>
   }
 
   <div class="story-card" id="story-card">
-    <div class="story-blob story-blob-1"></div>
-    <div class="story-blob story-blob-2"></div>
-    <div class="story-inner">
-      <img class="story-logo" src="cards/logo-suramericanos-white.png" alt="Juegos Suramericanos">
-      <div class="story-event">XIII Juegos Suramericanos<br>Santa Fe 2026</div>
-      <div class="story-name">{{ displayNombre }}</div>
-      <div class="story-title">es <b>Embajador/a</b> de<br>Rafaela 2026</div>
-      <div class="story-answers">
-        <div class="story-item">
-          <span class="story-label">Lugar</span>
-          <span class="story-value">{{ lugar }}</span>
+    <div class="story-frame">
+      <div class="story-inner">
+        <div class="story-logos">
+          <img class="story-logo-sur" src="cards/logo-suramericanos-color.png" alt="Juegos Suramericanos">
+          <img src="cards/logo-santafe-navy.png" alt="Santa Fe">
+          <img src="cards/logo-rosario-navy.png" alt="Rosario">
+          <img src="cards/logo-rafaela-navy.png" alt="Rafaela">
+          <img src="cards/logo-municipio-navy.png" alt="Municipalidad Santa Fe">
         </div>
-        <div class="story-item">
-          <span class="story-label">Plato</span>
-          <span class="story-value">{{ plato }}</span>
+        <div class="story-event">XIII Juegos Suramericanos · Santa Fe 2026</div>
+        <div class="story-cert">Certificado de</div>
+        <div class="story-title">EMBAJADOR/A DE RAFAELA 2026</div>
+        <div class="story-name">{{ displayNombre }}</div>
+        <div class="story-answers">
+          <div class="story-item">
+            <span class="story-label">Lugar</span>
+            <span class="story-value">{{ lugar }}</span>
+          </div>
+          <div class="story-item">
+            <span class="story-label">Plato</span>
+            <span class="story-value">{{ plato }}</span>
+          </div>
+          <div class="story-item">
+            <span class="story-label">Mensaje</span>
+            <span class="story-value">{{ mensaje }}</span>
+          </div>
         </div>
-        <div class="story-item">
-          <span class="story-label">Mensaje</span>
-          <span class="story-value">{{ mensaje }}</span>
-        </div>
+        <div class="story-hashtag">{{ HASHTAG }}</div>
+        <div class="story-cta">Otorgado digitalmente en el stand de los Juegos Suramericanos</div>
       </div>
-      <div class="story-hashtag">{{ HASHTAG }}</div>
-      <div class="story-cta">XIII Juegos Suramericanos · Santa Fe 2026</div>
     </div>
   </div>
 

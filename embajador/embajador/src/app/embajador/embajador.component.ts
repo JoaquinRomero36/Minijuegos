@@ -22,39 +22,12 @@ export class EmbajadorComponent {
 
   qrDataUrl = '';
   generatingQr = false;
-  downloading = false;
   storyDataUrl = '';
   storyReady = false;
   generatingStory = false;
+  qrMode: 'idle' | 'generating' | 'url' | 'invite' | 'dev' = 'idle';
 
   readonly HASHTAG = '#Rafaela2026';
-
-  readonly LUGARES = [
-    'Plaza 25 de Mayo',
-    'Teatro Municipal',
-    'Museo Usina',
-    'Fábrica (galpón)',
-    'Polideportivo',
-    'Catedral San Rafael'
-  ];
-
-  readonly PLATOS = [
-    'Asado',
-    'Empanadas',
-    'Alfajores santafesinos',
-    'Picada',
-    'Locro',
-    'Helado artesanal'
-  ];
-
-  readonly MENSAJES = [
-    'Te va a encantar',
-    'Bienvenido/a a casa',
-    'Rafaela te espera',
-    'Vení a vivirla',
-    'Rafaela te abraza',
-    'La ciudad de la amistad'
-  ];
 
   private audioCtx: AudioContext | null = null;
 
@@ -115,18 +88,51 @@ export class EmbajadorComponent {
     this.step = 2;
   }
 
-  seleccionarLugar(op: string) {
-    this.lugar = op;
+  seleccionarLugar() {
+    if (!this.lugar.trim()) {
+      Swal.fire({
+        title: 'Completá este campo',
+        text: 'Escribí qué lugar de Rafaela visitarías',
+        icon: 'warning',
+        showConfirmButton: false,
+        timer: 2000,
+        padding: '40px',
+        customClass: { popup: 'swal-suramericanos', title: 'swal2-title', confirmButton: 'swal-btn-gradient' }
+      });
+      return;
+    }
     this.step = 3;
   }
 
-  seleccionarPlato(op: string) {
-    this.plato = op;
+  seleccionarPlato() {
+    if (!this.plato.trim()) {
+      Swal.fire({
+        title: 'Completá este campo',
+        text: 'Escribí qué plato típico probarías',
+        icon: 'warning',
+        showConfirmButton: false,
+        timer: 2000,
+        padding: '40px',
+        customClass: { popup: 'swal-suramericanos', title: 'swal2-title', confirmButton: 'swal-btn-gradient' }
+      });
+      return;
+    }
     this.step = 4;
   }
 
-  seleccionarMensaje(op: string) {
-    this.mensaje = op;
+  seleccionarMensaje() {
+    if (!this.mensaje.trim()) {
+      Swal.fire({
+        title: 'Completá este campo',
+        text: 'Escribí el mensaje que le dejarías a los visitantes',
+        icon: 'warning',
+        showConfirmButton: false,
+        timer: 2000,
+        padding: '40px',
+        customClass: { popup: 'swal-suramericanos', title: 'swal2-title', confirmButton: 'swal-btn-gradient' }
+      });
+      return;
+    }
     this.step = 5;
     this.generarCredencial();
   }
@@ -135,17 +141,15 @@ export class EmbajadorComponent {
     if (this.step > 1) this.step--;
   }
 
+  private buildInviteText(): string {
+    return `${this.title} es Embajador/a de Rafaela 2026\nVeni a crear la tuya en el stand de los Juegos Suramericanos\n${this.HASHTAG}`;
+  }
+
   private async generarCredencial() {
     this.generatingQr = true;
+    this.qrMode = 'generating';
+    this.qrDataUrl = '';
     try {
-      const contenido = [
-        `${this.title} es Embajador/a de Rafaela 2026`,
-        `Lugar: ${this.lugar}`,
-        `Plato: ${this.plato}`,
-        `Mensaje: ${this.mensaje}`,
-        this.HASHTAG
-      ].join('\n');
-      this.qrDataUrl = await QRCode.toDataURL(contenido, { width: 400, margin: 2 });
       this.playSuccess();
     } catch (e) {
       console.error('Error generando QR', e);
@@ -162,11 +166,11 @@ export class EmbajadorComponent {
     this.generatingStory = true;
     try {
       const canvas = await html2canvas(card, {
-        width: 1080,
-        height: 1920,
+        width: 1920,
+        height: 1080,
         scale: 1,
-        windowWidth: 1080,
-        windowHeight: 1920,
+        windowWidth: 1920,
+        windowHeight: 1080,
         useCORS: true
       });
       this.storyDataUrl = canvas.toDataURL('image/png');
@@ -181,101 +185,28 @@ export class EmbajadorComponent {
 
   private async vincularQrDescarga() {
     const w = window as any;
-    if (!w.require || !this.storyDataUrl) return;
+    if (!w.require || !this.storyDataUrl) {
+      this.qrMode = 'dev';
+      return;
+    }
     try {
       const ipc = w.require('electron').ipcRenderer;
       const fileName = this.buildFileName();
-      const { url } = await ipc.invoke('save-story-png', { fileName, dataUrl: this.storyDataUrl });
-      if (url) {
-        this.qrDataUrl = await QRCode.toDataURL(url, { width: 400, margin: 2 });
+      const res = await ipc.invoke('save-story-png', { fileName, dataUrl: this.storyDataUrl });
+      if (res && res.url) {
+        this.qrDataUrl = await QRCode.toDataURL(res.url, { width: 400, margin: 2 });
+        this.qrMode = 'url';
+        return;
       }
     } catch (e) {
       console.error('Error vinculando QR de descarga', e);
     }
+    this.qrMode = 'invite';
+    this.qrDataUrl = await QRCode.toDataURL(this.buildInviteText(), { width: 400, margin: 2 });
   }
 
   private buildFileName(): string {
     return `embajador-rafaela-${this.nombre.trim().replace(/\s+/g, '-').toLowerCase()}.png`;
-  }
-
-  async descargar() {
-    if (this.downloading) return;
-    if (!this.storyDataUrl) {
-      if (this.generatingStory) {
-        while (this.generatingStory && !this.storyDataUrl) {
-          await new Promise(r => setTimeout(r, 200));
-        }
-      } else {
-        await this.prepararStory();
-      }
-    }
-    if (!this.storyDataUrl) return;
-
-    this.downloading = true;
-    const btn = document.getElementById('btn-descargar');
-    if (btn) {
-      btn.classList.add('btn-hidden');
-    }
-
-    try {
-      const dataUrl = this.storyDataUrl;
-      const fileName = this.buildFileName();
-
-      const guardado = this.saveViaNode(dataUrl, fileName);
-      if (guardado) {
-        Swal.fire({
-          title: '¡Credencial descargada!',
-          text: 'Se guardó una copia en tu equipo',
-          icon: 'success',
-          showConfirmButton: false,
-          timer: 3500,
-          timerProgressBar: true,
-          padding: '60px',
-          customClass: { popup: 'swal-suramericanos', title: 'swal2-title', confirmButton: 'swal-btn-gradient' }
-        });
-      } else {
-        this.downloadViaBrowser(dataUrl, fileName);
-      }
-    } catch (e) {
-      console.error('Error generando imagen', e);
-      Swal.fire({
-        title: 'No se pudo descargar',
-        icon: 'error',
-        showConfirmButton: false,
-        timer: 2500,
-        padding: '40px',
-        customClass: { popup: 'swal-suramericanos', title: 'swal2-title', confirmButton: 'swal-btn-gradient' }
-      });
-    } finally {
-      this.downloading = false;
-      if (btn) btn.classList.remove('btn-hidden');
-    }
-  }
-
-  private saveViaNode(dataUrl: string, fileName: string): boolean {
-    try {
-      const w = window as any;
-      if (!w.require) return false;
-      const fs = w.require('fs');
-      const path = w.require('path');
-      const os = w.require('os');
-      const dir = path.join(os.homedir(), 'EmbajadorRafaela');
-      fs.mkdirSync(dir, { recursive: true });
-      const base64 = dataUrl.split(',')[1];
-      fs.writeFileSync(path.join(dir, fileName), base64, 'base64');
-      return true;
-    } catch {
-      return false;
-    }
-  }
-
-  private downloadViaBrowser(dataUrl: string, fileName: string) {
-    const a = document.createElement('a');
-    a.href = dataUrl;
-    a.download = fileName;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
   }
 
   reiniciar() {
@@ -287,5 +218,6 @@ export class EmbajadorComponent {
     this.qrDataUrl = '';
     this.storyDataUrl = '';
     this.storyReady = false;
+    this.qrMode = 'idle';
   }
 }
