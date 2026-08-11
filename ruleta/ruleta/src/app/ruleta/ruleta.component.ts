@@ -18,7 +18,7 @@ interface Country {
   questions: Question[];
 }
 
-const flagUrl = (code: string) => `https://flagcdn.com/w40/${code}.png`;
+const flagUrl = (code: string) => `https://flagcdn.com/w80/${code}.png`;
 
 @Component({
   selector: 'app-ruleta',
