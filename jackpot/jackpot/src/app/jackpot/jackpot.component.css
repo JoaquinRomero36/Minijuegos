@@ -231,3 +231,21 @@
   .footer-logos img { height: 100px; }
   .footer-logos img:first-child { height: 130px; }
 }
+
+@media (orientation: portrait) and (min-height: 900px) and (max-height: 1999px) {
+  .main-logo { height: clamp(180px, 22vmin, 380px); }
+
+  .reels-container {
+    transform: scale(1.6);
+    margin: 63px 0;
+  }
+
+  .spin-btn {
+    font-size: clamp(1.8rem, 3.6vmin, 3.2rem);
+    padding: clamp(0.6em, 1vmin, 1.2em) clamp(2em, 3vmin, 4em);
+  }
+
+  .footer-logos { max-width: none; }
+  .footer-logos img { height: clamp(40px, 4.5vmin, 90px); }
+  .footer-logos img:first-child { height: clamp(50px, 5.5vmin, 110px); }
+}
